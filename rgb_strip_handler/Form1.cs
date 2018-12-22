@@ -18,15 +18,17 @@ namespace rgb_strip_handler
 
         Color c, savedColor = Color.Red;
         ImapClient client = new ImapClient();
-        
+
         /* First elements in messages */
-        const int SIMPLE_COLOR  = 0;
-        const int RAINBOW       = 1;
+        const int SIMPLE_COLOR = 0;
+        const int RAINBOW = 1;
         const int RAINBOW_CYCLE = 2;
-        const int KNIGHT_RIDER  = 3;
-        const int FADE          = 4;
-        const int BLINK         = 5;
-        const int GET_TEMP      = 6;
+        const int KNIGHT_RIDER = 3;
+        const int FADE = 4;
+        const int BLINK = 5;
+        const int GET_TEMP = 6;
+        const int OFF_DESK = 7;
+        const int ON_DESK = 8;
 
         /* File paths for saved things */
         const string pathColor = @".\color.txt";
@@ -140,7 +142,7 @@ namespace rgb_strip_handler
                 getTemp();
             }
         }
-        
+
         void setTempNoty(string TEMP)
         {
             string temp_double = TEMP.Substring(5, 5);
@@ -202,7 +204,7 @@ namespace rgb_strip_handler
                     }
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 /* We have not color, set default */
                 colorWheel1.Color = Color.White;
@@ -270,13 +272,13 @@ namespace rgb_strip_handler
                 c = Color.FromArgb(0, 255, 0);
             }
             else if (value >= 80)
-                    {
-                        c = Color.OrangeRed;
-                    }
-                    else
-                        {
-                            c = Color.Yellow;
-                        }
+            {
+                c = Color.OrangeRed;
+            }
+            else
+            {
+                c = Color.Yellow;
+            }
 
             using (Bitmap bm = new Bitmap(16, 16))
             {
@@ -471,7 +473,7 @@ namespace rgb_strip_handler
 
         private void Home_Resize(object sender, EventArgs e)
         {
-            if(FormWindowState.Minimized == this.WindowState)
+            if (FormWindowState.Minimized == this.WindowState)
             {
                 this.Hide();
             }
@@ -518,7 +520,7 @@ namespace rgb_strip_handler
             }
             catch (Exception) { }
         }
-        
+
         private void emailTimer_Tick(object sender, EventArgs e)
         {
             if (client.IsConnected == true)
@@ -550,7 +552,7 @@ namespace rgb_strip_handler
                 try
                 {
                     client.Connect("imap.gmail.com", 993, SecureSocketOptions.SslOnConnect);
-                    client.Authenticate(email_tbox.Text, password_tbox.Text);   
+                    client.Authenticate(email_tbox.Text, password_tbox.Text);
                 }
                 catch (Exception)
                 {
@@ -562,7 +564,7 @@ namespace rgb_strip_handler
 
         private void metroToggle1_CheckedChanged(object sender, EventArgs e)
         {
-            if(metroToggle1.CheckState == CheckState.Unchecked)
+            if (metroToggle1.CheckState == CheckState.Unchecked)
             {
                 emailTimer.Enabled = false;
                 client.Disconnect(true);
@@ -571,19 +573,24 @@ namespace rgb_strip_handler
                 String color = SIMPLE_COLOR.ToString() + "," + colorWheel1.Color.R.ToString() + "," + colorWheel1.Color.G.ToString() + "," + colorWheel1.Color.B.ToString() + ",\n";
                 arduino.Write(color);
             }
-            else if(metroToggle1.CheckState == CheckState.Checked)
+            else if (metroToggle1.CheckState == CheckState.Checked)
             {
                 emailTimer.Enabled = true;
             }
-            
+
         }
 
+        /// <summary>
+        /// Email notifier.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void timer1_Tick(object sender, EventArgs e)
         {
             /* 5 másodperc után kikapcsoljuk ezt a timert és visszaállítjuk az eredeti színt,
              * hogy ne villogjon a végetelenségig 
              */
-            if(cnt == 5)
+            if (cnt == 5)
             {
                 timer1.Enabled = false;
                 cnt = 1;
@@ -610,13 +617,13 @@ namespace rgb_strip_handler
 
         private void connect_btn_Click(object sender, EventArgs e)
         {
-            arduino.Close();
-            arduino.Dispose();
-
-            arduino.PortName = port_names_cbox.SelectedItem.ToString();
-
             try
             {
+                arduino.Close();
+                arduino.Dispose();
+
+                arduino.PortName = port_names_cbox.SelectedItem.ToString();
+            
                 arduino.Open();
 
                 Style = MetroFramework.MetroColorStyle.Green;
@@ -626,7 +633,7 @@ namespace rgb_strip_handler
 
                 saveSerialSettings(pathSerial, arduino.PortName);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.Write("HIBA - " + ex.Message);
             }
@@ -683,7 +690,7 @@ namespace rgb_strip_handler
                 {
                     Color tboxColor = Color.FromArgb(int.Parse(color_red_tbox.Text), int.Parse(color_green_tbox.Text), int.Parse(color_blue_tbox.Text));
 
-                    String color = SIMPLE_COLOR.ToString() + "," + tboxColor.R.ToString() + "," + tboxColor.G.ToString() + "," + tboxColor.B.ToString() + ",\n";
+                    string color = SIMPLE_COLOR.ToString() + "," + tboxColor.R.ToString() + "," + tboxColor.G.ToString() + "," + tboxColor.B.ToString() + ",\n";
                     colorWheel1.Color = tboxColor;
 
                     arduino.Write(color);
@@ -691,6 +698,53 @@ namespace rgb_strip_handler
                 catch (Exception)
                 {
 
+                }
+            }
+        }
+
+        private void Home_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                string color = SIMPLE_COLOR.ToString() + ",0,0,0,\n";
+
+                arduino.Write(color);
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        private void deskLight_toggle_CheckedChanged(object sender, EventArgs e)
+        {
+            if(deskLight_toggle.Checked == true)
+            {
+                try
+                {
+                    Color rgb = colorWheel1.Color;
+
+                    String color = ON_DESK.ToString() + ",0,0,0\n";
+                    arduino.Write(color);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Hiba", ex.Message);
+                }
+            }
+
+            if (deskLight_toggle.Checked == false)
+            {
+                try
+                {
+                    Color rgb = colorWheel1.Color;
+
+                    String color = OFF_DESK.ToString() + ",0,0,0\n";
+                    arduino.Write(color);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Hiba", ex.Message);
                 }
             }
         }
