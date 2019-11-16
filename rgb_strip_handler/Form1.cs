@@ -782,16 +782,6 @@ namespace rgb_strip_handler
                 arduino.Write(color);
 
                 System.Threading.Thread.Sleep(100);
-
-                // Disable the Desklight.
-                color = OFF_DESK.ToString() + ",0,0,0\n";
-                arduino.Write(color);
-
-                System.Threading.Thread.Sleep(100);
-
-                // Disable 3D Printer light.
-                color = OFF_PRINTER.ToString() + ",0,0,0\n";
-                arduino.Write(color);
             }
             catch (Exception)
             {
