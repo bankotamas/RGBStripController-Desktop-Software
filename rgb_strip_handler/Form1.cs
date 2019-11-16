@@ -111,6 +111,8 @@ namespace rgb_strip_handler
 
             if (arduino.IsOpen)
             {
+                string color = string.Empty;
+
                 /* Save port name into file */
                 saveSerialSettings(pathSerial, arduino.PortName);
 
@@ -121,9 +123,16 @@ namespace rgb_strip_handler
                 getTemp();
 
                 /* Set previous color and brightness */
-                String color = SIMPLE_COLOR.ToString() + "," + ((savedColor.R / 100) * metroTrackBar1.Value).ToString()
-                                                       + "," + ((savedColor.G / 100) * metroTrackBar1.Value).ToString() 
-                                                       + "," + ((savedColor.B / 100) * metroTrackBar1.Value).ToString() + ",\n";
+                if (colorWheel1.Color.R == 127 && colorWheel1.Color.G == 127 && colorWheel1.Color.B == 127)
+                {
+                    color = SIMPLE_COLOR.ToString() + ",255,255,255\n";
+                }
+                else
+                {
+                    color = SIMPLE_COLOR.ToString() + "," + ((savedColor.R / 100) * metroTrackBar1.Value).ToString()
+                                                           + "," + ((savedColor.G / 100) * metroTrackBar1.Value).ToString()
+                                                           + "," + ((savedColor.B / 100) * metroTrackBar1.Value).ToString() + ",\n";
+                }
 
                 color_red_tbox.Text = colorWheel1.Color.R.ToString();
                 color_green_tbox.Text = colorWheel1.Color.G.ToString();
@@ -393,15 +402,25 @@ namespace rgb_strip_handler
 
         private void colorWheel1_MouseUp(object sender, MouseEventArgs e)
         {
+            // Set new color
             try
             {
+                string color = string.Empty;
                 int red, green, blue;
 
                 red = ((int.Parse(color_red_tbox.Text) / 100) * metroTrackBar1.Value);
                 green = ((int.Parse(color_green_tbox.Text) / 100) * metroTrackBar1.Value);
                 blue = ((int.Parse(color_blue_tbox.Text) / 100) * metroTrackBar1.Value);
 
-                String color = SIMPLE_COLOR.ToString() + "," + colorWheel1.Color.R.ToString() + "," + colorWheel1.Color.G.ToString() + "," + colorWheel1.Color.B.ToString() + ",\n";
+                if (colorWheel1.Color.R == 127 && colorWheel1.Color.G == 127 && colorWheel1.Color.B == 127)
+                {
+                    color = SIMPLE_COLOR.ToString() + ",255,255,255\n";
+                }
+                else
+                {
+                    color = SIMPLE_COLOR.ToString() + "," + colorWheel1.Color.R.ToString() + "," + colorWheel1.Color.G.ToString() + "," + colorWheel1.Color.B.ToString() + ",\n";
+                }
+
                 arduino.Write(color);
             }
             catch (Exception ex)
@@ -409,6 +428,7 @@ namespace rgb_strip_handler
                 MessageBox.Show("Hiba","Nem sikerült beállítani a színt.\r\n" + ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
+            // Save new color
             try
             {
                 color_red_tbox.Text = colorWheel1.Color.R.ToString();
