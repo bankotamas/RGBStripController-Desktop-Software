@@ -36,6 +36,8 @@
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.metroTabControl1 = new MetroFramework.Controls.MetroTabControl();
             this.metroTabPage1_light = new MetroFramework.Controls.MetroTabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.deskLight_toggle = new MetroFramework.Controls.MetroToggle();
             this.blink_btn = new MetroFramework.Controls.MetroButton();
             this.fade_btn = new MetroFramework.Controls.MetroButton();
             this.knight_rider_btn = new MetroFramework.Controls.MetroButton();
@@ -88,16 +90,14 @@
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.emailTimer = new System.Windows.Forms.Timer(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.deskLight_toggle = new MetroFramework.Controls.MetroToggle();
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage1_light.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.metroTabPage2_temp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.metroTabPage3_notice.SuspendLayout();
             this.metroTabPage4_settings.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // serialPort1
@@ -115,7 +115,7 @@
             this.metroTabControl1.Location = new System.Drawing.Point(20, 60);
             this.metroTabControl1.Name = "metroTabControl1";
             this.metroTabControl1.SelectedIndex = 0;
-            this.metroTabControl1.Size = new System.Drawing.Size(480, 275);
+            this.metroTabControl1.Size = new System.Drawing.Size(542, 399);
             this.metroTabControl1.Style = MetroFramework.MetroColorStyle.White;
             this.metroTabControl1.TabIndex = 0;
             this.metroTabControl1.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -143,7 +143,7 @@
             this.metroTabPage1_light.HorizontalScrollbarSize = 10;
             this.metroTabPage1_light.Location = new System.Drawing.Point(4, 38);
             this.metroTabPage1_light.Name = "metroTabPage1_light";
-            this.metroTabPage1_light.Size = new System.Drawing.Size(472, 233);
+            this.metroTabPage1_light.Size = new System.Drawing.Size(534, 357);
             this.metroTabPage1_light.TabIndex = 0;
             this.metroTabPage1_light.Text = "Ambient Light";
             this.metroTabPage1_light.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -151,10 +151,34 @@
             this.metroTabPage1_light.VerticalScrollbarHighlightOnWheel = false;
             this.metroTabPage1_light.VerticalScrollbarSize = 10;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.Controls.Add(this.deskLight_toggle);
+            this.groupBox1.ForeColor = System.Drawing.Color.White;
+            this.groupBox1.Location = new System.Drawing.Point(329, 303);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(186, 55);
+            this.groupBox1.TabIndex = 17;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Desk light";
+            // 
+            // deskLight_toggle
+            // 
+            this.deskLight_toggle.AutoSize = true;
+            this.deskLight_toggle.Location = new System.Drawing.Point(10, 19);
+            this.deskLight_toggle.Name = "deskLight_toggle";
+            this.deskLight_toggle.Size = new System.Drawing.Size(80, 17);
+            this.deskLight_toggle.TabIndex = 0;
+            this.deskLight_toggle.Text = "Off";
+            this.deskLight_toggle.UseSelectable = true;
+            this.deskLight_toggle.CheckedChanged += new System.EventHandler(this.deskLight_toggle_CheckedChanged);
+            // 
             // blink_btn
             // 
             this.blink_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.blink_btn.Location = new System.Drawing.Point(267, 83);
+            this.blink_btn.Location = new System.Drawing.Point(329, 83);
             this.blink_btn.Name = "blink_btn";
             this.blink_btn.Size = new System.Drawing.Size(90, 23);
             this.blink_btn.TabIndex = 16;
@@ -166,7 +190,7 @@
             // fade_btn
             // 
             this.fade_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.fade_btn.Location = new System.Drawing.Point(363, 54);
+            this.fade_btn.Location = new System.Drawing.Point(425, 54);
             this.fade_btn.Name = "fade_btn";
             this.fade_btn.Size = new System.Drawing.Size(90, 23);
             this.fade_btn.TabIndex = 15;
@@ -178,7 +202,7 @@
             // knight_rider_btn
             // 
             this.knight_rider_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.knight_rider_btn.Location = new System.Drawing.Point(267, 54);
+            this.knight_rider_btn.Location = new System.Drawing.Point(329, 54);
             this.knight_rider_btn.Name = "knight_rider_btn";
             this.knight_rider_btn.Size = new System.Drawing.Size(90, 23);
             this.knight_rider_btn.TabIndex = 14;
@@ -190,7 +214,7 @@
             // rainbow_cycle_btn
             // 
             this.rainbow_cycle_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.rainbow_cycle_btn.Location = new System.Drawing.Point(363, 25);
+            this.rainbow_cycle_btn.Location = new System.Drawing.Point(425, 25);
             this.rainbow_cycle_btn.Name = "rainbow_cycle_btn";
             this.rainbow_cycle_btn.Size = new System.Drawing.Size(90, 23);
             this.rainbow_cycle_btn.TabIndex = 13;
@@ -202,7 +226,7 @@
             // rainbow_btn
             // 
             this.rainbow_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.rainbow_btn.Location = new System.Drawing.Point(267, 25);
+            this.rainbow_btn.Location = new System.Drawing.Point(329, 25);
             this.rainbow_btn.Name = "rainbow_btn";
             this.rainbow_btn.Size = new System.Drawing.Size(90, 23);
             this.rainbow_btn.TabIndex = 12;
@@ -215,7 +239,7 @@
             // 
             this.metroLabel4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.metroLabel4.AutoSize = true;
-            this.metroLabel4.Location = new System.Drawing.Point(267, 3);
+            this.metroLabel4.Location = new System.Drawing.Point(329, 3);
             this.metroLabel4.Name = "metroLabel4";
             this.metroLabel4.Size = new System.Drawing.Size(78, 19);
             this.metroLabel4.TabIndex = 11;
@@ -227,9 +251,9 @@
             this.metroTrackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.metroTrackBar1.BackColor = System.Drawing.Color.Transparent;
-            this.metroTrackBar1.Location = new System.Drawing.Point(-4, 208);
+            this.metroTrackBar1.Location = new System.Drawing.Point(-4, 332);
             this.metroTrackBar1.Name = "metroTrackBar1";
-            this.metroTrackBar1.Size = new System.Drawing.Size(265, 23);
+            this.metroTrackBar1.Size = new System.Drawing.Size(327, 23);
             this.metroTrackBar1.TabIndex = 10;
             this.metroTrackBar1.Text = "metroTrackBar1";
             this.metroTrackBar1.Theme = MetroFramework.MetroThemeStyle.Light;
@@ -240,7 +264,7 @@
             // 
             this.metroLabel3.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.metroLabel3.AutoSize = true;
-            this.metroLabel3.Location = new System.Drawing.Point(177, 179);
+            this.metroLabel3.Location = new System.Drawing.Point(208, 303);
             this.metroLabel3.Name = "metroLabel3";
             this.metroLabel3.Size = new System.Drawing.Size(20, 19);
             this.metroLabel3.TabIndex = 8;
@@ -251,7 +275,7 @@
             // 
             this.metroLabel2.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.metroLabel2.AutoSize = true;
-            this.metroLabel2.Location = new System.Drawing.Point(86, 179);
+            this.metroLabel2.Location = new System.Drawing.Point(117, 303);
             this.metroLabel2.Name = "metroLabel2";
             this.metroLabel2.Size = new System.Drawing.Size(21, 19);
             this.metroLabel2.TabIndex = 7;
@@ -262,7 +286,7 @@
             // 
             this.metroLabel1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.metroLabel1.AutoSize = true;
-            this.metroLabel1.Location = new System.Drawing.Point(-4, 179);
+            this.metroLabel1.Location = new System.Drawing.Point(27, 303);
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Size = new System.Drawing.Size(20, 19);
             this.metroLabel1.TabIndex = 6;
@@ -286,7 +310,7 @@
             this.color_blue_tbox.CustomButton.Visible = false;
             this.color_blue_tbox.Lines = new string[] {
         "127"};
-            this.color_blue_tbox.Location = new System.Drawing.Point(203, 179);
+            this.color_blue_tbox.Location = new System.Drawing.Point(232, 303);
             this.color_blue_tbox.MaxLength = 32767;
             this.color_blue_tbox.Name = "color_blue_tbox";
             this.color_blue_tbox.PasswordChar = '\0';
@@ -322,7 +346,7 @@
             this.color_green_tbox.CustomButton.Visible = false;
             this.color_green_tbox.Lines = new string[] {
         "127"};
-            this.color_green_tbox.Location = new System.Drawing.Point(113, 179);
+            this.color_green_tbox.Location = new System.Drawing.Point(142, 303);
             this.color_green_tbox.MaxLength = 32767;
             this.color_green_tbox.Name = "color_green_tbox";
             this.color_green_tbox.PasswordChar = '\0';
@@ -358,7 +382,7 @@
             this.color_red_tbox.CustomButton.Visible = false;
             this.color_red_tbox.Lines = new string[] {
         "127"};
-            this.color_red_tbox.Location = new System.Drawing.Point(22, 179);
+            this.color_red_tbox.Location = new System.Drawing.Point(51, 303);
             this.color_red_tbox.MaxLength = 32767;
             this.color_red_tbox.Name = "color_red_tbox";
             this.color_red_tbox.PasswordChar = '\0';
@@ -385,9 +409,8 @@
             this.colorWheel1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.colorWheel1.Location = new System.Drawing.Point(0, 3);
             this.colorWheel1.Name = "colorWheel1";
-            this.colorWheel1.Size = new System.Drawing.Size(261, 161);
+            this.colorWheel1.Size = new System.Drawing.Size(323, 285);
             this.colorWheel1.TabIndex = 2;
-            this.colorWheel1.ColorChanged += new System.EventHandler(this.colorWheel1_ColorChanged);
             this.colorWheel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.colorWheel1_MouseUp);
             // 
             // metroTabPage2_temp
@@ -405,7 +428,7 @@
             this.metroTabPage2_temp.HorizontalScrollbarSize = 10;
             this.metroTabPage2_temp.Location = new System.Drawing.Point(4, 38);
             this.metroTabPage2_temp.Name = "metroTabPage2_temp";
-            this.metroTabPage2_temp.Size = new System.Drawing.Size(472, 233);
+            this.metroTabPage2_temp.Size = new System.Drawing.Size(534, 357);
             this.metroTabPage2_temp.TabIndex = 1;
             this.metroTabPage2_temp.Text = "Temperature";
             this.metroTabPage2_temp.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -461,7 +484,7 @@
             // 
             this.metroLabel12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.metroLabel12.AutoSize = true;
-            this.metroLabel12.Location = new System.Drawing.Point(365, 89);
+            this.metroLabel12.Location = new System.Drawing.Point(427, 89);
             this.metroLabel12.Name = "metroLabel12";
             this.metroLabel12.Size = new System.Drawing.Size(61, 19);
             this.metroLabel12.TabIndex = 13;
@@ -472,7 +495,7 @@
             // 
             this.metroLabel11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.metroLabel11.AutoSize = true;
-            this.metroLabel11.Location = new System.Drawing.Point(362, 44);
+            this.metroLabel11.Location = new System.Drawing.Point(424, 44);
             this.metroLabel11.Name = "metroLabel11";
             this.metroLabel11.Size = new System.Drawing.Size(111, 19);
             this.metroLabel11.TabIndex = 12;
@@ -556,7 +579,7 @@
             series1.Legend = "Legend1";
             series1.Name = "Szoba";
             this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(472, 233);
+            this.chart1.Size = new System.Drawing.Size(534, 357);
             this.chart1.TabIndex = 3;
             this.chart1.Text = "chart1";
             // 
@@ -576,7 +599,7 @@
             this.metroTabPage3_notice.HorizontalScrollbarSize = 10;
             this.metroTabPage3_notice.Location = new System.Drawing.Point(4, 38);
             this.metroTabPage3_notice.Name = "metroTabPage3_notice";
-            this.metroTabPage3_notice.Size = new System.Drawing.Size(472, 233);
+            this.metroTabPage3_notice.Size = new System.Drawing.Size(534, 357);
             this.metroTabPage3_notice.TabIndex = 2;
             this.metroTabPage3_notice.Text = "Notifications";
             this.metroTabPage3_notice.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -895,35 +918,12 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // groupBox1
-            // 
-            this.groupBox1.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox1.Controls.Add(this.deskLight_toggle);
-            this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(267, 130);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(186, 100);
-            this.groupBox1.TabIndex = 17;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Desk light";
-            // 
-            // deskLight_toggle
-            // 
-            this.deskLight_toggle.AutoSize = true;
-            this.deskLight_toggle.Location = new System.Drawing.Point(10, 19);
-            this.deskLight_toggle.Name = "deskLight_toggle";
-            this.deskLight_toggle.Size = new System.Drawing.Size(80, 17);
-            this.deskLight_toggle.TabIndex = 0;
-            this.deskLight_toggle.Text = "Off";
-            this.deskLight_toggle.UseSelectable = true;
-            this.deskLight_toggle.CheckedChanged += new System.EventHandler(this.deskLight_toggle_CheckedChanged);
-            // 
             // Home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle;
-            this.ClientSize = new System.Drawing.Size(520, 355);
+            this.ClientSize = new System.Drawing.Size(582, 479);
             this.Controls.Add(this.metroTabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(520, 355);
@@ -939,6 +939,8 @@
             this.metroTabControl1.ResumeLayout(false);
             this.metroTabPage1_light.ResumeLayout(false);
             this.metroTabPage1_light.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.metroTabPage2_temp.ResumeLayout(false);
             this.metroTabPage2_temp.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
@@ -947,8 +949,6 @@
             this.metroTabPage4_settings.ResumeLayout(false);
             this.metroTabPage4_settings.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
