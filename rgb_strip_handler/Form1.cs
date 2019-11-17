@@ -125,7 +125,8 @@ namespace rgb_strip_handler
                 /* Set previous color and brightness */
                 if (colorWheel1.Color.R == 127 && colorWheel1.Color.G == 127 && colorWheel1.Color.B == 127)
                 {
-                    color = SIMPLE_COLOR.ToString() + ",255,255,255\n";
+                    int whiteBrightness = (255 / 100) * metroTrackBar1.Value;
+                    color = SIMPLE_COLOR.ToString() + "," + whiteBrightness.ToString() + "," + whiteBrightness.ToString() + "," + whiteBrightness.ToString() + "\n";
                 }
                 else
                 {
@@ -414,11 +415,14 @@ namespace rgb_strip_handler
 
                 if (colorWheel1.Color.R == 127 && colorWheel1.Color.G == 127 && colorWheel1.Color.B == 127)
                 {
-                    color = SIMPLE_COLOR.ToString() + ",255,255,255\n";
+                    int whiteBrightness = (255 / 100) * metroTrackBar1.Value;
+                    color = SIMPLE_COLOR.ToString() + "," + whiteBrightness.ToString() + "," + whiteBrightness.ToString() + "," + whiteBrightness.ToString() + "\n";
                 }
                 else
                 {
-                    color = SIMPLE_COLOR.ToString() + "," + colorWheel1.Color.R.ToString() + "," + colorWheel1.Color.G.ToString() + "," + colorWheel1.Color.B.ToString() + ",\n";
+                    color = SIMPLE_COLOR.ToString() + "," + ((colorWheel1.Color.R / 100) * metroTrackBar1.Value).ToString()
+                                                           + "," + ((colorWheel1.Color.G / 100) * metroTrackBar1.Value).ToString()
+                                                           + "," + ((colorWheel1.Color.B / 100) * metroTrackBar1.Value).ToString() + ",\n";
                 }
 
                 arduino.Write(color);
