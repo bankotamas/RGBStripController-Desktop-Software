@@ -453,9 +453,18 @@ namespace rgb_strip_handler
             {
                 int red, green, blue;
 
-                red = ((int.Parse(color_red_tbox.Text) / 100) * metroTrackBar1.Value);
-                green = ((int.Parse(color_green_tbox.Text) / 100) * metroTrackBar1.Value);
-                blue = ((int.Parse(color_blue_tbox.Text) / 100) * metroTrackBar1.Value);
+                if (colorWheel1.Color.R == 127 && colorWheel1.Color.G == 127 && colorWheel1.Color.B == 127)
+                {
+                    red = (255 / 100) * metroTrackBar1.Value;
+                    green = (255 / 100) * metroTrackBar1.Value;
+                    blue = (255 / 100) * metroTrackBar1.Value;
+                }
+                else
+                {
+                    red = ((int.Parse(color_red_tbox.Text) / 100) * metroTrackBar1.Value);
+                    green = ((int.Parse(color_green_tbox.Text) / 100) * metroTrackBar1.Value);
+                    blue = ((int.Parse(color_blue_tbox.Text) / 100) * metroTrackBar1.Value);
+                }
 
                 saveColor(pathColor, Color.FromArgb(colorWheel1.Color.A, colorWheel1.Color.R, colorWheel1.Color.G, colorWheel1.Color.B));
                 saveBrightness(metroTrackBar1.Value);
