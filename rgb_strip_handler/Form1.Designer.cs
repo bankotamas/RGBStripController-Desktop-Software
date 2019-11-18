@@ -411,6 +411,7 @@
             this.colorWheel1.Name = "colorWheel1";
             this.colorWheel1.Size = new System.Drawing.Size(323, 285);
             this.colorWheel1.TabIndex = 2;
+            this.colorWheel1.ColorChanged += new System.EventHandler(this.colorWheel1_ColorChanged);
             this.colorWheel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.colorWheel1_MouseUp);
             // 
             // metroTabPage2_temp
@@ -746,7 +747,7 @@
             this.metroTabPage4_settings.HorizontalScrollbarSize = 10;
             this.metroTabPage4_settings.Location = new System.Drawing.Point(4, 38);
             this.metroTabPage4_settings.Name = "metroTabPage4_settings";
-            this.metroTabPage4_settings.Size = new System.Drawing.Size(472, 233);
+            this.metroTabPage4_settings.Size = new System.Drawing.Size(534, 357);
             this.metroTabPage4_settings.TabIndex = 3;
             this.metroTabPage4_settings.Text = "Settings";
             this.metroTabPage4_settings.Theme = MetroFramework.MetroThemeStyle.Dark;

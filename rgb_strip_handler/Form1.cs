@@ -851,6 +851,13 @@ namespace rgb_strip_handler
             }
         }
 
+        private void colorWheel1_ColorChanged(object sender, EventArgs e)
+        {
+            color_red_tbox.Text = colorWheel1.Color.R.ToString();
+            color_green_tbox.Text = colorWheel1.Color.G.ToString();
+            color_blue_tbox.Text = colorWheel1.Color.B.ToString();
+        }
+
         private void rainbow_cycle_btn_Click(object sender, EventArgs e)
         {
             try
