@@ -12,6 +12,7 @@ RGB strip (ws2812b) controller, via simple colors, effects, email notifier..
 
 # Main functions
 - Ambient light
+
 ![N|Solid](https://raw.githubusercontent.com/bankotamas/RGBStripController-Desktop-Software/master/rgb_strip_handler/Pictures/form_view.jpg)
   - Set main strip color
   - Set main brightness
@@ -20,6 +21,7 @@ RGB strip (ws2812b) controller, via simple colors, effects, email notifier..
   - Set secondary strip brightness
 
 - TV lights (over Blynk)
+
 ![N|Solid](https://raw.githubusercontent.com/bankotamas/RGBStripController-Desktop-Software/master/rgb_strip_handler/Pictures/form_view_tv_lights.jpg)
   - Set strip color
   - Set brightness
@@ -27,12 +29,14 @@ RGB strip (ws2812b) controller, via simple colors, effects, email notifier..
   - You have to open a txt file with your blynk token
 
 - Temperature
+
 ![N|Solid](https://raw.githubusercontent.com/bankotamas/RGBStripController-Desktop-Software/master/rgb_strip_handler/Pictures/form_view_temperature.jpg)
   - Show received temperature values on chart
   - Show last value
   - Show average temperature
   
 - Notifications
+
 ![N|Solid](https://raw.githubusercontent.com/bankotamas/RGBStripController-Desktop-Software/master/rgb_strip_handler/Pictures/form_view_notifications.jpg)
   - Set email addres (when you receive a new email in this box, it will show the color or effect)
   - Your mailbox password
@@ -40,10 +44,12 @@ RGB strip (ws2812b) controller, via simple colors, effects, email notifier..
   - Switch for enable or disable this function
   
 - Settings
+
 ![N|Solid](https://raw.githubusercontent.com/bankotamas/RGBStripController-Desktop-Software/master/rgb_strip_handler/Pictures/form_view_settings.jpg)
   - Set the port for communications.
   
-- Try notification (temperature)
+- Tray notification (temperature)
+
 ![N|Solid](https://raw.githubusercontent.com/bankotamas/RGBStripController-Desktop-Software/master/rgb_strip_handler/Pictures/temperature.jpg)
 
 *If you have any suggestions or you noticed any bug feel free to contact me.*
