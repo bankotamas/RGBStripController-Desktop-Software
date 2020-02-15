@@ -131,7 +131,7 @@
             this.metroTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metroTabControl1.Location = new System.Drawing.Point(20, 60);
             this.metroTabControl1.Name = "metroTabControl1";
-            this.metroTabControl1.SelectedIndex = 1;
+            this.metroTabControl1.SelectedIndex = 2;
             this.metroTabControl1.Size = new System.Drawing.Size(592, 487);
             this.metroTabControl1.Style = MetroFramework.MetroColorStyle.White;
             this.metroTabControl1.TabIndex = 0;
@@ -667,8 +667,9 @@
             // 
             // metroLabel13
             // 
+            this.metroLabel13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.metroLabel13.AutoSize = true;
-            this.metroLabel13.Location = new System.Drawing.Point(416, 111);
+            this.metroLabel13.Location = new System.Drawing.Point(514, 111);
             this.metroLabel13.Name = "metroLabel13";
             this.metroLabel13.Size = new System.Drawing.Size(23, 19);
             this.metroLabel13.TabIndex = 15;
@@ -677,6 +678,7 @@
             // 
             // avgTemp_tbox
             // 
+            this.avgTemp_tbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             // 
             // 
             // 
@@ -691,7 +693,7 @@
             this.avgTemp_tbox.CustomButton.Visible = false;
             this.avgTemp_tbox.Lines = new string[] {
         "0"};
-            this.avgTemp_tbox.Location = new System.Drawing.Point(379, 111);
+            this.avgTemp_tbox.Location = new System.Drawing.Point(477, 111);
             this.avgTemp_tbox.MaxLength = 32767;
             this.avgTemp_tbox.Name = "avgTemp_tbox";
             this.avgTemp_tbox.PasswordChar = '\0';
@@ -733,8 +735,9 @@
             // 
             // celsius_lb
             // 
+            this.celsius_lb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.celsius_lb.AutoSize = true;
-            this.celsius_lb.Location = new System.Drawing.Point(416, 67);
+            this.celsius_lb.Location = new System.Drawing.Point(514, 67);
             this.celsius_lb.Name = "celsius_lb";
             this.celsius_lb.Size = new System.Drawing.Size(23, 19);
             this.celsius_lb.TabIndex = 5;
@@ -743,6 +746,7 @@
             // 
             // temp_tbox
             // 
+            this.temp_tbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             // 
             // 
             // 
@@ -757,7 +761,7 @@
             this.temp_tbox.CustomButton.Visible = false;
             this.temp_tbox.Lines = new string[] {
         "0"};
-            this.temp_tbox.Location = new System.Drawing.Point(379, 66);
+            this.temp_tbox.Location = new System.Drawing.Point(477, 66);
             this.temp_tbox.MaxLength = 32767;
             this.temp_tbox.Name = "temp_tbox";
             this.temp_tbox.PasswordChar = '\0';

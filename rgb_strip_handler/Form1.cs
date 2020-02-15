@@ -133,19 +133,23 @@ namespace rgb_strip_handler
                 /* Set previous color and brightness */
                 if (colorWheel1.Color.R == 127 && colorWheel1.Color.G == 127 && colorWheel1.Color.B == 127)
                 {
-                    int whiteBrightness = (255 / 100) * metroTrackBar1.Value;
+                    int whiteBrightness = (int)((255 / 100.0) * metroTrackBar1.Value);
                     color = SIMPLE_COLOR.ToString() + "," + whiteBrightness.ToString() + "," + whiteBrightness.ToString() + "," + whiteBrightness.ToString() + "\n";
                 }
                 else
                 {
-                    color = SIMPLE_COLOR.ToString() + "," + ((savedColor.R / 100) * metroTrackBar1.Value).ToString()
-                                                           + "," + ((savedColor.G / 100) * metroTrackBar1.Value).ToString()
-                                                           + "," + ((savedColor.B / 100) * metroTrackBar1.Value).ToString() + ",\n";
+                    color = SIMPLE_COLOR.ToString() + "," + ((int)((savedColor.R / 100.0) * metroTrackBar1.Value)).ToString()
+                                                           + "," + ((int)((savedColor.G / 100.0) * metroTrackBar1.Value)).ToString()
+                                                           + "," + ((int)((savedColor.B / 100.0) * metroTrackBar1.Value)).ToString() + ",\n";
                 }
 
                 color_red_tbox.Text = colorWheel1.Color.R.ToString();
                 color_green_tbox.Text = colorWheel1.Color.G.ToString();
                 color_blue_tbox.Text = colorWheel1.Color.B.ToString();
+
+                color_red_TV_tbox.Text = colorWheel2.Color.R.ToString();
+                color_green_TV_tbox.Text = colorWheel2.Color.G.ToString();
+                color_blue_TV_tbox.Text = colorWheel2.Color.B.ToString();
 
                 arduino.Write(color);
             }
