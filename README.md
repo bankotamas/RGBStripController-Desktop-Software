@@ -29,7 +29,7 @@ RGB strip (ws2812b) controller, via simple colors, effects, email notifier..
   - You have to open a txt file with your blynk token
 
 ![N|Solid](https://raw.githubusercontent.com/bankotamas/RGBStripController-Desktop-Software/master/rgb_strip_handler/Pictures/form_view_temperature.jpg)
-- Temperature
+- Temperature (Sensor: DS18B20)
   - Show received temperature values on chart
   - Show last value
   - Show average temperature
