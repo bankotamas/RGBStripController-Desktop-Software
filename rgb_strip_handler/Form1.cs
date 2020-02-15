@@ -11,6 +11,8 @@ using System.Text;
 using MailKit.Security;
 using System.Net.Http;
 using System.Net;
+using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace rgb_strip_handler
 {
@@ -918,19 +920,59 @@ namespace rgb_strip_handler
 
         private void openToken_btn_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult;
-            OpenFileDialog openFile = new OpenFileDialog()
+            if(blynkPin_tbox != null && blynkPin_tbox.Text.Length > 0)
             {
-                Title = "Open authorization token..."
-            };
+                if(serverURL_tbox != null && serverURL_tbox.Text.Length > 0)
+                {
+                    DialogResult dialogResult;
+                    OpenFileDialog openFile = new OpenFileDialog()
+                    {
+                        Title = "Open authorization token..."
+                    };
 
-            dialogResult = openFile.ShowDialog();
+                    dialogResult = openFile.ShowDialog();
 
-            if(dialogResult == DialogResult.OK && openFile.FileName.Length > 0)
+                    if (dialogResult == DialogResult.OK && openFile.FileName.Length > 0)
+                    {
+                        BlynkToken = File.ReadAllText(openFile.FileName);
+                        tokenOK = true;
+                        colorWheel2.Enabled = true;
+
+                        try
+                        {
+                            // http://blynk-cloud.com/OX9Fa9oguM1QLKrSYEnsp1NBUytW4NA4/get/V1
+                            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(serverURL_tbox.Text + BlynkToken + "/get/" + blynkPin_tbox.Text);
+
+                            string html = string.Empty;
+
+                            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                            using (Stream stream = response.GetResponseStream())
+                            using (StreamReader reader = new StreamReader(stream))
+                            {
+                                html = reader.ReadToEnd();
+                            }
+
+                            Regex rgx = new Regex("[^0-9, -]");
+                            string str = rgx.Replace(html, "");
+
+                            int[] colors = str.Split(',').Select(Int32.Parse).ToArray();
+
+                            colorWheel2.Color = Color.FromArgb(colors[0], colors[1], colors[2]);
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Server parameter can't be empty.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            else
             {
-                BlynkToken = File.ReadAllText(openFile.FileName);
-                tokenOK = true;
-                colorWheel2.Enabled = true;
+                MessageBox.Show("Pin parameter can't be empty.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -950,13 +992,6 @@ namespace rgb_strip_handler
                 // Set new color
                 try
                 {
-                    //string color = string.Empty;
-                    //int red, green, blue;
-
-                    //red = (int)((int.Parse(color_red_TV_tbox.Text) / 100.0) * tv_brightness_tbar.Value);
-                    //green = (int)((int.Parse(color_green_TV_tbox.Text) / 100.0) * tv_brightness_tbar.Value);
-                    //blue = (int)((int.Parse(color_blue_TV_tbox.Text) / 100.0) * tv_brightness_tbar.Value);
-
                     // If the color is white, need to recalculate the values
                     if (colorWheel2.Color.R == 127 && colorWheel2.Color.G == 127 && colorWheel2.Color.B == 127)
                     {
