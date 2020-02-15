@@ -9,3 +9,8 @@ RGB strip (ws2812b) controller, via simple colors, effects, email notifier..
 
 # Fixes
 - Lost RGB component details
+
+# Main functions
+- Ambient light
+![N|Solid](https://raw.githubusercontent.com/bankotamas/RGBStripController-Desktop-Software/master/rgb_strip_handler/Pictures/form_view.jpg)
+  - Set color
