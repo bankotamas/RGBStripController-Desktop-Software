@@ -9,14 +9,16 @@ using System.IO;
 using System.IO.Ports;
 using System.Text;
 using MailKit.Security;
-using System.Collections.Generic;
-using System.Management;
+using System.Net.Http;
+using System.Net;
 
 namespace rgb_strip_handler
 {
     public partial class Home : MetroForm
     {
         SerialPort arduino = new SerialPort("COM11", 115200, Parity.None, 8, StopBits.One);
+
+        private static readonly HttpClient clientHTTP = new HttpClient();
 
         Color c, savedColor = Color.Red;
         ImapClient client = new ImapClient();
@@ -31,12 +33,12 @@ namespace rgb_strip_handler
         const int GET_TEMP = 6;
         const int OFF_DESK = 7;
         const int ON_DESK = 8;
-        const int OFF_PRINTER = 9;
-        const int ON_PRINTER = 10;
+        const int SET_BRIGHT_DESK = 9;
 
         /* File paths for saved things */
         const string pathColor = @".\color.txt";
         const string brightnessColor = @".\brightness.txt";
+        const string DeskLight_brightnessColor = @".\brightness2.txt";
         const string pathSerial = @".\serial.txt";
 
         /* Email notify counter */
@@ -46,6 +48,9 @@ namespace rgb_strip_handler
         double sumTemp;
         double avgTemp;
         int tempCnt;
+
+        bool tokenOK = false;
+        string BlynkToken;
 
         public Home()
         {
@@ -68,8 +73,11 @@ namespace rgb_strip_handler
                 /* Read previous color from file */
                 readColor(pathColor);
 
-                /* Read previous brightness from file */
-                readBrightness();
+                /* Read previous color brightness from file */
+                metroTrackBar1.Value = readBrightness(brightnessColor);
+
+                /* Read previous desklight brightness from file */
+                deskLight_tbar.Value = readBrightness(DeskLight_brightnessColor);
 
                 /* Read previous Port Name from file */
                 readSerialSettings(pathSerial);
@@ -211,18 +219,18 @@ namespace rgb_strip_handler
             }
         }
 
-        public void saveBrightness(int brightnessValue)
+        public void saveBrightness(string path,int brightnessValue)
         {
             try
             {
                 /* Delete the file if it exists. */
-                if (File.Exists(brightnessColor))
+                if (File.Exists(path))
                 {
-                    File.Delete(brightnessColor);
+                    File.Delete(path);
                 }
 
                 /* Create the file. */
-                using (FileStream fs = File.Create(brightnessColor))
+                using (FileStream fs = File.Create(path))
                 {
                     Byte[] info = new UTF8Encoding(true).GetBytes(brightnessValue.ToString());
 
@@ -236,19 +244,20 @@ namespace rgb_strip_handler
             }
         }
 
-        public void readBrightness()
+        public int readBrightness(string path)
         {
+            int value = 0;
             try
             {
-                if (File.Exists(brightnessColor))
+                if (File.Exists(path))
                 {
                     /* Open the stream and read it back. */
-                    using (StreamReader sr = File.OpenText(brightnessColor))
+                    using (StreamReader sr = File.OpenText(path))
                     {
                         string readBrightness = "";
                         while ((readBrightness = sr.ReadLine()) != null)
                         {
-                            metroTrackBar1.Value = Int32.Parse(readBrightness);
+                            value = Int32.Parse(readBrightness);
                         }
                     }
                 }
@@ -258,6 +267,8 @@ namespace rgb_strip_handler
                 /* We have not color, set default */
                 colorWheel1.Color = Color.White;
             }
+
+            return value;
         }
 
         public void readColor(string path)
@@ -409,20 +420,20 @@ namespace rgb_strip_handler
                 string color = string.Empty;
                 int red, green, blue;
 
-                red = ((int.Parse(color_red_tbox.Text) / 100) * metroTrackBar1.Value);
-                green = ((int.Parse(color_green_tbox.Text) / 100) * metroTrackBar1.Value);
-                blue = ((int.Parse(color_blue_tbox.Text) / 100) * metroTrackBar1.Value);
+                red = (int)((int.Parse(color_red_tbox.Text) / 100.0) * metroTrackBar1.Value);
+                green = (int)((int.Parse(color_green_tbox.Text) / 100.0) * metroTrackBar1.Value);
+                blue = (int)((int.Parse(color_blue_tbox.Text) / 100.0) * metroTrackBar1.Value);
 
                 if (colorWheel1.Color.R == 127 && colorWheel1.Color.G == 127 && colorWheel1.Color.B == 127)
                 {
-                    int whiteBrightness = (255 / 100) * metroTrackBar1.Value;
+                    int whiteBrightness = (int)((255 / 100.0) * metroTrackBar1.Value);
                     color = SIMPLE_COLOR.ToString() + "," + whiteBrightness.ToString() + "," + whiteBrightness.ToString() + "," + whiteBrightness.ToString() + "\n";
                 }
                 else
                 {
-                    color = SIMPLE_COLOR.ToString() + "," + ((colorWheel1.Color.R / 100) * metroTrackBar1.Value).ToString()
-                                                           + "," + ((colorWheel1.Color.G / 100) * metroTrackBar1.Value).ToString()
-                                                           + "," + ((colorWheel1.Color.B / 100) * metroTrackBar1.Value).ToString() + ",\n";
+                    color = SIMPLE_COLOR.ToString() + "," + ((int)((colorWheel1.Color.R / 100.0) * metroTrackBar1.Value)).ToString()
+                                                           + "," + ((int)((colorWheel1.Color.G / 100.0) * metroTrackBar1.Value)).ToString()
+                                                           + "," + ((int)((colorWheel1.Color.B / 100.0) * metroTrackBar1.Value)).ToString() + ",\n";
                 }
 
                 arduino.Write(color);
@@ -453,21 +464,22 @@ namespace rgb_strip_handler
             {
                 int red, green, blue;
 
+                // Fehér szín esetében.
                 if (colorWheel1.Color.R == 127 && colorWheel1.Color.G == 127 && colorWheel1.Color.B == 127)
                 {
-                    red = (255 / 100) * metroTrackBar1.Value;
-                    green = (255 / 100) * metroTrackBar1.Value;
-                    blue = (255 / 100) * metroTrackBar1.Value;
+                    red = (int)((255 / 100.0) * metroTrackBar1.Value);
+                    green = (int)((255 / 100.0) * metroTrackBar1.Value);
+                    blue = (int)((255 / 100.0) * metroTrackBar1.Value);
                 }
                 else
                 {
-                    red = ((int.Parse(color_red_tbox.Text) / 100) * metroTrackBar1.Value);
-                    green = ((int.Parse(color_green_tbox.Text) / 100) * metroTrackBar1.Value);
-                    blue = ((int.Parse(color_blue_tbox.Text) / 100) * metroTrackBar1.Value);
+                    red = (int)((int.Parse(color_red_tbox.Text) / 100.0) * metroTrackBar1.Value);
+                    green = (int)((int.Parse(color_green_tbox.Text) / 100.0) * metroTrackBar1.Value);
+                    blue = (int)((int.Parse(color_blue_tbox.Text) / 100.0) * metroTrackBar1.Value);
                 }
 
                 saveColor(pathColor, Color.FromArgb(colorWheel1.Color.A, colorWheel1.Color.R, colorWheel1.Color.G, colorWheel1.Color.B));
-                saveBrightness(metroTrackBar1.Value);
+                saveBrightness(brightnessColor, metroTrackBar1.Value);
 
                 String color = SIMPLE_COLOR.ToString() + "," + red.ToString() + "," + green.ToString() + "," + blue.ToString() + ",\n";
                 arduino.Write(color);
@@ -815,6 +827,11 @@ namespace rgb_strip_handler
                 arduino.Write(color);
 
                 System.Threading.Thread.Sleep(100);
+
+                color = OFF_DESK.ToString() + ",0,0,0,\n";
+                arduino.Write(color);
+
+                System.Threading.Thread.Sleep(100);
             }
             catch (Exception)
             {
@@ -824,11 +841,22 @@ namespace rgb_strip_handler
 
         private void deskLight_toggle_CheckedChanged(object sender, EventArgs e)
         {
+            int red, green, blue;
+
             if(deskLight_toggle.Checked == true)
             {
+                groupBox1.Location = new Point(metroTrackBar1.Location.X + metroTrackBar1.Size.Width + 8, metroTrackBar1.Location.Y - 61);
+                groupBox1.Size = new Size(186, 90);
+
+                deskLight_tbar.Visible = true;
+
                 try
                 {
-                    string color = ON_DESK.ToString() + ",0,0,0\n";
+                    red = deskLight_tbar.Value;
+                    green = deskLight_tbar.Value;
+                    blue = deskLight_tbar.Value;
+
+                    string color = ON_DESK.ToString() + "," + red.ToString() + "," + green.ToString() + "," + blue.ToString() + ",\n";
                     arduino.Write(color);
                 }
                 catch (Exception ex)
@@ -839,9 +867,14 @@ namespace rgb_strip_handler
 
             if (deskLight_toggle.Checked == false)
             {
+                groupBox1.Location = new Point(metroTrackBar1.Location.X + metroTrackBar1.Size.Width + 8, metroTrackBar1.Location.Y - 22);
+                groupBox1.Size = new Size(186, 51);
+
+                deskLight_tbar.Visible = false;
+
                 try
                 {
-                    string color = OFF_DESK.ToString() + ",0,0,0\n";
+                    string color = OFF_DESK.ToString() + ",0,0,0,\n";
                     arduino.Write(color);
                 }
                 catch (Exception ex)
@@ -856,6 +889,106 @@ namespace rgb_strip_handler
             color_red_tbox.Text = colorWheel1.Color.R.ToString();
             color_green_tbox.Text = colorWheel1.Color.G.ToString();
             color_blue_tbox.Text = colorWheel1.Color.B.ToString();
+        }
+
+        private void deskLight_tbar_MouseUp(object sender, MouseEventArgs e)
+        {
+            int red, green, blue;
+
+            try
+            {
+                red = deskLight_tbar.Value;
+                green = deskLight_tbar.Value;
+                blue = deskLight_tbar.Value;
+
+                string color = SET_BRIGHT_DESK.ToString() + "," + red.ToString() + "," + green.ToString() + "," + blue.ToString() + ",\n";
+                arduino.Write(color);
+
+                saveBrightness(DeskLight_brightnessColor, deskLight_tbar.Value);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Hiba", ex.Message);
+            }
+        }
+
+        private void openToken_btn_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult;
+            OpenFileDialog openFile = new OpenFileDialog()
+            {
+                Title = "Open authorization token..."
+            };
+
+            dialogResult = openFile.ShowDialog();
+
+            if(dialogResult == DialogResult.OK && openFile.FileName.Length > 0)
+            {
+                BlynkToken = File.ReadAllText(openFile.FileName);
+                tokenOK = true;
+                colorWheel2.Enabled = true;
+            }
+        }
+
+        private void colorWheel2_ColorChanged(object sender, EventArgs e)
+        {
+            color_red_TV_tbox.Text = colorWheel2.Color.R.ToString();
+            color_green_TV_tbox.Text = colorWheel2.Color.G.ToString();
+            color_blue_TV_tbox.Text = colorWheel2.Color.B.ToString();
+        }
+
+        private void colorWheel2_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (tokenOK == true)
+            {
+                int[] TVcolor = new int[3]; // index: 0 - red, 1 - green, 2 - blue
+
+                // Set new color
+                try
+                {
+                    //string color = string.Empty;
+                    //int red, green, blue;
+
+                    //red = (int)((int.Parse(color_red_TV_tbox.Text) / 100.0) * tv_brightness_tbar.Value);
+                    //green = (int)((int.Parse(color_green_TV_tbox.Text) / 100.0) * tv_brightness_tbar.Value);
+                    //blue = (int)((int.Parse(color_blue_TV_tbox.Text) / 100.0) * tv_brightness_tbar.Value);
+
+                    // If the color is white, need to recalculate the values
+                    if (colorWheel2.Color.R == 127 && colorWheel2.Color.G == 127 && colorWheel2.Color.B == 127)
+                    {
+                        int whiteBrightness = (int)((255 / 100.0) * tv_brightness_tbar.Value);
+
+                        TVcolor[0] = whiteBrightness;
+                        TVcolor[1] = whiteBrightness;
+                        TVcolor[2] = whiteBrightness;
+                    }
+                    else
+                    {
+                        TVcolor[0] = (int)((colorWheel2.Color.R / 100.0) * tv_brightness_tbar.Value);
+                        TVcolor[1] = (int)((colorWheel2.Color.G / 100.0) * tv_brightness_tbar.Value);
+                        TVcolor[2] = (int)((colorWheel2.Color.B / 100.0) * tv_brightness_tbar.Value);
+                    }
+
+                    // http://blynk-cloud.com/your_token/update/V1?value=25&value=55&value=20 - merge rgb components
+                    WebRequest request = WebRequest.Create(serverURL_tbox.Text + BlynkToken + "/update/" + blynkPin_tbox.Text +
+                            "?value=" + TVcolor[0].ToString() + "&value=" + TVcolor[1].ToString() + "&value=" + TVcolor[2].ToString());
+
+                    // Get the response.  
+                    WebResponse response = request.GetResponse();
+                    
+                    // Display the status.  
+                    Console.WriteLine(((HttpWebResponse)response).StatusDescription);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Hiba", "Nem sikerült beállítani a színt.\r\n" + ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+        }
+
+        private void tv_brightness_tbar_MouseUp(object sender, MouseEventArgs e)
+        {
+            colorWheel2_MouseUp(sender, e);
         }
 
         private void rainbow_cycle_btn_Click(object sender, EventArgs e)
