@@ -1,7 +1,11 @@
-# RGBStripController-Desktop-Software
-RGB strip (ws2812b) controller, via simple colors, effects, email notifier
+# RGB StripController - Desktop Software
+RGB strip (ws2812b) controller, via simple colors, effects, email notifier..
 
 # New Features!
+  - Blynk zeRGBa controll over http (arduino code: )
 
-  - Import a HTML file and watch it magically convert to Markdown
-  - Drag and drop images (requires your Dropbox account be linked)
+![N|Solid](https://static.tildacdn.com/tild3631-3462-4933-a462-633739303731/Blynk_logo_diamond2x.png)
+
+
+# Fixes
+- Lost RGB component details
